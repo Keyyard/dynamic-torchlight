@@ -7,59 +7,118 @@ import {
   system,
   world,
   Player,
+  BlockPermutation
 } from "@minecraft/server";
 
 class LightManager {
-  async light13(player: Player) {
-    player.runCommandAsync(`setblock ~ ~1 ~ light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~-4 ~4 ~-4 air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~4 ~-1 ~4 ~-4 ~-2 ~-4 air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~1 ~ ~1 air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~-4 ~-1 ~ ~-1 air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~4 ~2 ~-4 ~1 ~ ~-1 air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~4 ~-1 ~ ~1 air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~ ~-1 ~ ~ air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~4 ~2 ~ ~1 ~ ~ air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~ ~2 ~-4 ~ ~ ~-1 air [] replace light_block ["block_light_level"=13]`);
-    player.runCommandAsync(`fill ~ ~2 ~4 ~ ~ ~1 air [] replace light_block ["block_light_level"=13]`);
+  async light13(player:Player) {
+    let dimension = player.dimension;
+    let { x, y, z } = player.location;
+
+    // Place the central light block
+    const centerBlock = dimension.getBlock({ x, y: y + 1, z });
+    if (centerBlock) {
+        let lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: 13 });
+        centerBlock.setPermutation(lightBlock);
+    }
+
+    // Remove only light blocks in the correct area
+    const radius = 4;
+    const height = 2;
+    let airBlock = BlockPermutation.resolve("minecraft:air");
+
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -height; dy <= height; dy++) {
+            for (let dz = -radius; dz <= radius; dz++) {
+                if (dx === 0 && dy === 1 && dz === 0) continue;
+
+                const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
+
+                if (block && ["minecraft:light_block_13","minecraft:light_block_11","minecraft:light_block_9"].includes(block.typeId)) {
+                    block.setPermutation(airBlock);
+                }
+            }
+        }
+    }
   }
   async light11(player: Player) {
-    player.runCommandAsync(`setblock ~ ~1 ~ light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~-4 ~4 ~-4 air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~4 ~-1 ~4 ~-4 ~-2 ~-4 air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~1 ~ ~1 air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~-4 ~-1 ~ ~-1 air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~4 ~2 ~-4 ~1 ~ ~-1 air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~4 ~-1 ~ ~1 air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~ ~-1 ~ ~ air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~4 ~2 ~ ~1 ~ ~ air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~ ~2 ~-4 ~ ~ ~-1 air [] replace light_block ["block_light_level"=11]`);
-    player.runCommandAsync(`fill ~ ~2 ~4 ~ ~ ~1 air [] replace light_block ["block_light_level"=11]`);
+    let dimension = player.dimension;
+    let { x, y, z } = player.location;
+
+    // Place the central light block
+    const centerBlock = dimension.getBlock({ x, y: y + 1, z });
+    if (centerBlock) {
+        let lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: 11 });
+        centerBlock.setPermutation(lightBlock);
+    }
+
+    // Remove only light blocks in the correct area
+    const radius = 4;
+    const height = 2;
+    let airBlock = BlockPermutation.resolve("minecraft:air");
+
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -height; dy <= height; dy++) {
+            for (let dz = -radius; dz <= radius; dz++) {
+                if (dx === 0 && dy === 1 && dz === 0) continue;
+
+                const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
+
+                if (block && ["minecraft:light_block_13","minecraft:light_block_11","minecraft:light_block_9"].includes(block.typeId)) {
+                    block.setPermutation(airBlock);
+                }
+            }
+        }
+    }
   }
   async light9(player: Player) {
-    player.runCommandAsync(`setblock ~ ~1 ~ light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~-4 ~4 ~-4 air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~4 ~-1 ~4 ~-4 ~-2 ~-4 air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~1 ~ ~1 air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~-4 ~-1 ~ ~-1 air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~4 ~2 ~-4 ~1 ~ ~-1 air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~4 ~-1 ~ ~1 air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~-4 ~2 ~ ~-1 ~ ~ air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~4 ~2 ~ ~1 ~ ~ air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~ ~2 ~-4 ~ ~ ~-1 air [] replace light_block ["block_light_level"=9]`);
-    player.runCommandAsync(`fill ~ ~2 ~4 ~ ~ ~1 air [] replace light_block ["block_light_level"=9]`);
+    let dimension = player.dimension;
+    let { x, y, z } = player.location;
+
+    // Place the central light block
+    const centerBlock = dimension.getBlock({ x, y: y + 1, z });
+    if (centerBlock) {
+        let lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: 9 });
+        centerBlock.setPermutation(lightBlock);
+    }
+
+    // Remove only light blocks in the correct area
+    const radius = 4;
+    const height = 2;
+    let airBlock = BlockPermutation.resolve("minecraft:air");
+
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -height; dy <= height; dy++) {
+            for (let dz = -radius; dz <= radius; dz++) {
+                if (dx === 0 && dy === 1 && dz === 0) continue;
+
+                const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
+
+                if (block && ["minecraft:light_block_13","minecraft:light_block_11","minecraft:light_block_9"].includes(block.typeId)) {
+                    block.setPermutation(airBlock);
+                }
+            }
+        }
+    }
   }
   async no_light(player: Player) {
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~-4 ~4 ~-4 air [] replace light_block`);
-    player.runCommandAsync(`fill ~4 ~-1 ~4 ~-4 ~-2 ~-4 air [] replace light_block`);
-    player.runCommandAsync(`fill ~4 ~2 ~4 ~1 ~ ~1 air [] replace light_block`);
-    player.runCommandAsync(`fill ~-4 ~2 ~-4 ~-1 ~ ~-1 air [] replace light_block`);
-    player.runCommandAsync(`fill ~4 ~2 ~-4 ~1 ~ ~-1 air [] replace light_block`);
-    player.runCommandAsync(`fill ~-4 ~2 ~4 ~-1 ~ ~1 air [] replace light_block`);
-    player.runCommandAsync(`fill ~-4 ~2 ~ ~-1 ~ ~ air [] replace light_block`);
-    player.runCommandAsync(`fill ~4 ~2 ~ ~1 ~ ~ air [] replace light_block`);
-    player.runCommandAsync(`fill ~ ~2 ~-4 ~ ~ ~-1 air [] replace light_block`);
-    player.runCommandAsync(`fill ~ ~2 ~4 ~ ~ ~1 air [] replace light_block`);
+    let dimension = player.dimension;
+    let { x, y, z } = player.location;
+    const radius = 4;
+    const height = 2;
+    let airBlock = BlockPermutation.resolve("minecraft:air");
+
+    for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -height; dy <= height; dy++) {
+            for (let dz = -radius; dz <= radius; dz++) {
+                const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
+
+                if (block && ["minecraft:light_block_13","minecraft:light_block_11","minecraft:light_block_9"].includes(block.typeId)) {
+                    block.setPermutation(airBlock);
+                }
+            }
+        }
+    }
   }
 }
 
