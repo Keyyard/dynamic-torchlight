@@ -8,17 +8,19 @@ import {
   BlockPermutation
 } from "@minecraft/server";
 var LightManager = class {
-  async light13(player) {
+  async setLightLevel(player, level) {
     let dimension = player.dimension;
     let { x, y, z } = player.location;
-    const centerBlock = dimension.getBlock({ x, y: y + 1, z });
-    if (centerBlock) {
-      let lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: 13 });
-      centerBlock.setPermutation(lightBlock);
-    }
     const radius = 4;
     const height = 2;
     let airBlock = BlockPermutation.resolve("minecraft:air");
+    if (level !== null) {
+      const centerBlock = dimension.getBlock({ x, y: y + 1, z });
+      if (centerBlock) {
+        const lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: level });
+        centerBlock.setPermutation(lightBlock);
+      }
+    }
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -height; dy <= height; dy++) {
         for (let dz = -radius; dz <= radius; dz++) {
@@ -31,71 +33,18 @@ var LightManager = class {
         }
       }
     }
+  }
+  async light13(player) {
+    await this.setLightLevel(player, 13);
   }
   async light11(player) {
-    let dimension = player.dimension;
-    let { x, y, z } = player.location;
-    const centerBlock = dimension.getBlock({ x, y: y + 1, z });
-    if (centerBlock) {
-      let lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: 11 });
-      centerBlock.setPermutation(lightBlock);
-    }
-    const radius = 4;
-    const height = 2;
-    let airBlock = BlockPermutation.resolve("minecraft:air");
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dy = -height; dy <= height; dy++) {
-        for (let dz = -radius; dz <= radius; dz++) {
-          if (dx === 0 && dy === 1 && dz === 0)
-            continue;
-          const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
-          if (block && ["minecraft:light_block_13", "minecraft:light_block_11", "minecraft:light_block_9"].includes(block.typeId)) {
-            block.setPermutation(airBlock);
-          }
-        }
-      }
-    }
+    await this.setLightLevel(player, 11);
   }
   async light9(player) {
-    let dimension = player.dimension;
-    let { x, y, z } = player.location;
-    const centerBlock = dimension.getBlock({ x, y: y + 1, z });
-    if (centerBlock) {
-      let lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: 9 });
-      centerBlock.setPermutation(lightBlock);
-    }
-    const radius = 4;
-    const height = 2;
-    let airBlock = BlockPermutation.resolve("minecraft:air");
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dy = -height; dy <= height; dy++) {
-        for (let dz = -radius; dz <= radius; dz++) {
-          if (dx === 0 && dy === 1 && dz === 0)
-            continue;
-          const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
-          if (block && ["minecraft:light_block_13", "minecraft:light_block_11", "minecraft:light_block_9"].includes(block.typeId)) {
-            block.setPermutation(airBlock);
-          }
-        }
-      }
-    }
+    await this.setLightLevel(player, 9);
   }
   async no_light(player) {
-    let dimension = player.dimension;
-    let { x, y, z } = player.location;
-    const radius = 4;
-    const height = 2;
-    let airBlock = BlockPermutation.resolve("minecraft:air");
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dy = -height; dy <= height; dy++) {
-        for (let dz = -radius; dz <= radius; dz++) {
-          const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
-          if (block && ["minecraft:light_block_13", "minecraft:light_block_11", "minecraft:light_block_9"].includes(block.typeId)) {
-            block.setPermutation(airBlock);
-          }
-        }
-      }
-    }
+    await this.setLightLevel(player, null);
   }
 };
 var TorchlightManager = class {
