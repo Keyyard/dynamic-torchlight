@@ -18,9 +18,9 @@ This addon was created by @keyyard.
 
 ## Screenshots
 
-![Image 1](image1.png)
-![Image 2](image2.png)
-![Image 3](image3.png)
+![Image 1](medias/image1.png)
+![Image 2](medias/image2.png)
+![Image 3](medias/image3.png)
 
 ## How to use
 
