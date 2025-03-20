@@ -1,0 +1,15 @@
+{
+	"resource_pack_name": "Dynamic Torchlight",
+	"texture_name": "atlas.items",
+	"texture_data": {
+		"torch": {
+			"textures": "textures/blocks/torch_on"
+		},
+		"redstone_torch": {
+			"textures": "textures/blocks/redstone_torch_on"
+		},
+		"soul_torch": {
+			"textures": "textures/blocks/soul_torch"
+		}
+	}
+}

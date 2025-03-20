@@ -1,0 +1,44 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": [
+			"Keyyard"
+		]
+	},
+	"header": {
+		"name": "Dynamic Torchlight",
+		"description": "Dynamic torchlight, illuminates and mesmerizes your journey with captivating shadows. by Keyyard on YouTube & Twitter",
+		"min_engine_version": [
+			1,
+			21,
+			1
+		],
+		"uuid": "eb32b1d7-7cf9-494a-989c-d9bc2ff004e0",
+		"version": [
+			1,
+			0,
+			5
+		]
+	},
+	"modules": [
+		{
+			"type": "resources",
+			"uuid": "21f55d2d-dfc8-4e14-9d8d-dba886ec9f66",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"uuid": "4335a660-d8b8-4603-99fa-c1e3ca746825",
+			"version": [
+				1,
+				0,
+				5
+			]
+		}
+	]
+}
