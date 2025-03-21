@@ -18,7 +18,6 @@ This addon was created by @keyyard.
 
 ## Screenshots
 
-![Image 4](medias/image4.png)
 ![Image 1](medias/image1.png)
 ![Image 2](medias/image2.png)
 ![Image 3](medias/image3.png)
