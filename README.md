@@ -16,10 +16,12 @@ This addon was created by @keyyard.
 - Fully optimized for performance - lag-free.
 - Compatible with other mods and resource packs.
 
-## Screenshots
+## Showcase
 
 ![GIF 1](medias/torch.gif)
 ![GIF 2](medias/torch2.gif)
+
+## Screenshots
 
 ![Image 1](medias/image1.png)
 ![Image 2](medias/image2.png)
