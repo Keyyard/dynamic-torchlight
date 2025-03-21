@@ -44,7 +44,21 @@ var LightManager = class {
     await this.setLightLevel(player, 9);
   }
   async no_light(player) {
-    await this.setLightLevel(player, null);
+    let { x, y, z } = player.location;
+    let airBlock = BlockPermutation.resolve("minecraft:air");
+    let dimension = player.dimension;
+    const radius = 4;
+    const height = 2;
+    for (let dx = -radius; dx <= radius; dx++) {
+      for (let dy = -height; dy <= height; dy++) {
+        for (let dz = -radius; dz <= radius; dz++) {
+          const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
+          if (block && ["minecraft:light_block_13", "minecraft:light_block_11", "minecraft:light_block_9"].includes(block.typeId)) {
+            block.setPermutation(airBlock);
+          }
+        }
+      }
+    }
   }
 };
 var TorchlightManager = class {
