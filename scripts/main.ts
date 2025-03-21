@@ -1,97 +1,40 @@
 import {
-  Container,
+  BlockPermutation,
   EntityEquippableComponent,
   EntityInventoryComponent,
   EquipmentSlot,
-  ItemStack,
+  Player,
   system,
   world,
-  Player,
-  BlockPermutation
 } from "@minecraft/server";
+import { removeLightBlocks, replaceItems, setLightLevel } from "./utils";
+import { light11, light13, light9 } from "./config";
 
 class LightManager {
-  private async setLightLevel(player: Player, level: number | null) {
-    let dimension = player.dimension;
-    let { x, y, z } = player.location;
-    const radius = 4;
-    const height = 2;
-    let airBlock = BlockPermutation.resolve("minecraft:air");
-    
-    if (level !== null) {
-      // Place the central light block
-      const centerBlock = dimension.getBlock({ x, y: y + 1, z });
-      if (centerBlock) {
-        const lightBlock = BlockPermutation.resolve("minecraft:light_block", { block_light_level: level });
-        centerBlock.setPermutation(lightBlock);
-      }
-    }
-    
-    // Remove only light blocks in the correct area
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dy = -height; dy <= height; dy++) {
-        for (let dz = -radius; dz <= radius; dz++) {
-          if (dx === 0 && dy === 1 && dz === 0) continue;
-          const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
-          if (block && ["minecraft:light_block_13", "minecraft:light_block_11", "minecraft:light_block_9"].includes(block.typeId)) {
-            block.setPermutation(airBlock);
-          }
-        }
-      }
-    }
-  }
-  
   async light13(player: Player) {
-    await this.setLightLevel(player, 13);
+    await setLightLevel(player, 13);
   }
-  
+
   async light11(player: Player) {
-    await this.setLightLevel(player, 11);
+    await setLightLevel(player, 11);
   }
-  
+
   async light9(player: Player) {
-    await this.setLightLevel(player, 9);
+    await setLightLevel(player, 9);
   }
-  
+
   async no_light(player: Player) {
-    let { x, y, z } = player.location;
-    let airBlock = BlockPermutation.resolve("minecraft:air");
-    let dimension = player.dimension;
-    const radius = 4;
-    const height = 2;
-    // Remove only light blocks in the correct area
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dy = -height; dy <= height; dy++) {
-        for (let dz = -radius; dz <= radius; dz++) {
-          const block = dimension.getBlock({ x: x + dx, y: y + dy, z: z + dz });
-          if (block && ["minecraft:light_block_13", "minecraft:light_block_11", "minecraft:light_block_9"].includes(block.typeId)) {
-            block.setPermutation(airBlock);
-          }
-        }
-      }
-    }
+    const { x, y, z } = player.location;
+    const dimension = player.dimension;
+    removeLightBlocks(dimension, x, y, z);
   }
 }
 
 class TorchlightManager {
-  private light13 = ["torch_offhand", "minecraft:torch"];
-  private light11 = ["soul_torch", "soul_torch_offhand"];
-  private light9 = ["redstone_torch", "redstone_torch_offhand"];
+  private LightManagerInstance = new LightManager();
 
-  LightManagerInstance = new LightManager();
   constructor() {
     system.runInterval(() => this.updatePlayers());
-  }
-
-  private replaceItems(inventory: Container, oldTypeId: string, newTypeId: string) {
-    for (let i = 0; i < inventory.size; i++) {
-      const item = inventory.getItem(i);
-      if (item && item.typeId === oldTypeId) {
-        const newItem = new ItemStack(newTypeId, item.amount);
-        newItem.setLore([`§6placeable in offhand slot!`]);
-        inventory.setItem(i, newItem);
-      }
-    }
   }
 
   private updatePlayers() {
@@ -105,9 +48,9 @@ class TorchlightManager {
 
     const container = inventory.container;
     if (container) {
-      this.replaceItems(container, "minecraft:torch", "keyyard:torch_offhand");
-      this.replaceItems(container, "minecraft:redstone_torch", "keyyard:redstone_torch_offhand");
-      this.replaceItems(container, "minecraft:soul_torch", "keyyard:soul_torch_offhand");
+      replaceItems(container, "minecraft:torch", "keyyard:torch_offhand");
+      replaceItems(container, "minecraft:redstone_torch", "keyyard:redstone_torch_offhand");
+      replaceItems(container, "minecraft:soul_torch", "keyyard:soul_torch_offhand");
     }
 
     const equip = player.getComponent(EntityEquippableComponent.componentId) as EntityEquippableComponent;
@@ -125,19 +68,19 @@ class TorchlightManager {
     }
 
     if (hand && !player.hasTag("offhand")) {
-      this.light13.forEach((i) => {
+      light13.forEach((i) => {
         if (hand.typeId.includes(i)) {
           player.addTag("mainhand");
           this.LightManagerInstance.light13(player);
         }
       });
-      this.light11.forEach((i) => {
+      light11.forEach((i) => {
         if (hand.typeId.includes(i)) {
           player.addTag("mainhand");
           this.LightManagerInstance.light11(player);
         }
       });
-      this.light9.forEach((i) => {
+      light9.forEach((i) => {
         if (hand.typeId.includes(i)) {
           player.addTag("mainhand");
           this.LightManagerInstance.light9(player);

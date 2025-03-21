@@ -13,10 +13,13 @@ This addon was created by @keyyard.
 
 - Dynamic lighting with torches.
 - Torches can be equipped in the offhand slot.
-- Realistic light radius and flickering effects.
+- Fully optimized for performance - lag-free.
 - Compatible with other mods and resource packs.
 
 ## Screenshots
+
+![GIF 1](medias/torch.gif)
+![GIF 2](medias/torch2.gif)
 
 ![Image 1](medias/image1.png)
 ![Image 2](medias/image2.png)
